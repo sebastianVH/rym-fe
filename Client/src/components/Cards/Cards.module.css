@@ -1,0 +1,16 @@
+/* .cardContainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    align-content: space-around;
+} */
+
+.cardContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(350px,1fr));
+    grid-column-gap:1px ;
+    grid-row-gap: 1px;
+    justify-content: center;
+}
