@@ -41,7 +41,7 @@ function App() {
          return;
       }
       try {
-         const {data} = await axios.get(`http://localhost:3001/rickandmorty/character/${id}`)
+         const {data} = await axios.get(`/character/${id}`)
          setCharacters((oldChars) => [...oldChars, data]);
       } catch (error) {
          window.alert(error.response.data.error)
@@ -65,7 +65,7 @@ function App() {
       const { email, password } = userData;
       const URL = 'http://localhost:3001/rickandmorty/login/';
       
-        axios(URL + `?email=${email}&password=${password}`)
+        axios(`/login?email=${email}&password=${password}`)
         .then(({ data }) => {
          accessUser(data)
          }).catch( error => alert(error.response.data.error))
@@ -74,7 +74,7 @@ function App() {
 
    const register = (userData) => {
       const {email, password} = userData
-      axios.post('http://localhost:3001/rickandmorty/login/',{email:email, password:password})
+      axios.post('/login/',{email:email, password:password})
       .then(({data}) => {
             accessUser(data)
       })
