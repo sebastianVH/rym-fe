@@ -13,7 +13,6 @@ export const ORDER = "ORDER"
 // }
 
 export const addFav = (character) => {
-    const endpoint = 'http://localhost:3001/rickandmorty/fav';
     return async (dispatch) => {
         try {
             const {data} = await axios.post("/fav", character)
@@ -63,7 +62,6 @@ export const addFav = (character) => {
 // };
 
 export const removeFav = (id) => {
-    const endpoint = 'http://localhost:3001/rickandmorty/fav/' + id;
     return async (dispatch) => {
         try {
             const {data} = await axios.delete(`/fav/${id}`)
