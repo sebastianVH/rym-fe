@@ -14,9 +14,6 @@ function App() {
    const { pathname } = useLocation()
    const [characters,setCharacters] = useState([])
    const [access,setAccess] = useState(false)
-   const EMAIL = "seba@gmail.com"
-   const PASSWORD = "seba1234"
-
 
    // const onSearch = (id)=>{
 
@@ -44,7 +41,7 @@ function App() {
          return;
       }
       try {
-         const {data} = await axios.get(`/character/${id}`)
+         const {data} = await axios.get(`http://localhost:3001/rickandmorty/character/${id}`)
          setCharacters((oldChars) => [...oldChars, data]);
       } catch (error) {
          window.alert(error.response.data.error)
@@ -58,25 +55,41 @@ function App() {
       
    const navigate = useNavigate()
 
+   const accessUser = (data) => {
+      const { access } = data;
+      setAccess(data);
+      access && navigate('/home');
+   }
+
    function login(userData) {
       const { email, password } = userData;
-      const URL = '/rickandmorty/login/';
-      axios(URL + `?email=${email}&password=${password}`).then(({ data }) => {
-         const { access } = data;
-         setAccess(data);
-         access && navigate('/home');
-      });
+      const URL = 'http://localhost:3001/rickandmorty/login/';
+      
+        axios(URL + `?email=${email}&password=${password}`)
+        .then(({ data }) => {
+         accessUser(data)
+         }).catch( error => alert(error.response.data.error))
+         
+   }
+
+   const register = (userData) => {
+      const {email, password} = userData
+      axios.post('http://localhost:3001/rickandmorty/login/',{email:email, password:password})
+      .then(({data}) => {
+            accessUser(data)
+      })
+      .catch(error => alert(error.response.data.error))
    }
 
    useEffect(() => {
       !access && navigate('/')
-      }, [access])
+      }, [access,navigate])
 
    return (
       <div className='App'>
          {pathname !== '/' && <NavBar search ={onSearch} />}
          <Routes> 
-            <Route path="/" element={<Form login={login} />}/>
+            <Route path="/" element={<Form login={login} register={register} />}/>
             <Route path="/favorites" element={<Favorites close={onClose} />}/>
             <Route path="/home" element={<Cards characters={characters} close={onClose} />} />
             <Route path="/about" element={<About/>}/>
